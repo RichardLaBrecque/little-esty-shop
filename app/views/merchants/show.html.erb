@@ -1,6 +1,7 @@
 <h1><%= @merchant.name %></h1>
 <%= link_to "Item Index", "/merchants/#{@merchant.id}/items" %>
 <%= link_to "Invoice Index", "/merchants/#{@merchant.id}/invoices" %>
+<%= link_to "View Bulk Discounts", "/merchants/#{@merchant.id}/bulk_discounts" %>
 <div class="top_customers">
   <ol>
     <% @merchant.top_five_customers.each do |customer| %>
@@ -23,5 +24,3 @@
     </li>
   <% end %>
 </div>
-
- 
