@@ -1,0 +1,7 @@
+<%= form_with model: @bulkdiscount, local: true do |form| %>
+<%= form.label :discount_rate %>
+<%= form.number_field :discount_rate %>
+<%= form.label :threshold %>
+<%= form.number_field :threshold %>
+<%= form.submit%>
+<% end %>

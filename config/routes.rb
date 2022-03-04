@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get '/admin', to: 'admin#show'
   get '/merchants/:id/dashboard', to: 'merchants#show'
   post '/admin/merchants/new', to: 'admin/merchants#create'
+  post '/merchants/:merchant_id/bulk_discounts/new', to: 'bulk_discounts#create'
 
   namespace :admin do
     resources :merchants
@@ -12,6 +13,6 @@ Rails.application.routes.draw do
   resources :merchants do
     resources :items, except:[:destroy], controller: 'merchant_items'
     resources :invoices, only:[:index, :show, :update], controller: 'merchant_invoices'
-    resources :bulk_discounts, only:[:index, :show], controller: 'bulk_discounts'
+    resources :bulk_discounts, controller: 'bulk_discounts'
   end
 end

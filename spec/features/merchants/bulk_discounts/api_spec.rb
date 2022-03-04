@@ -1,16 +1,6 @@
 require 'rails_helper'
 
-#   Merchant Bulk Discounts Index
-#
-# As a merchant
-# When I visit my merchant dashboard
-# Then I see a link to view all my discounts
-# When I click this link
-# Then I am taken to my bulk discounts index page
-# Where I see all of my bulk discounts including their
-# percentage discount and quantity thresholds
-# And each bulk discount listed includes a link to its show page
-RSpec.describe 'The Bulk Discount Index' do
+RSpec.describe 'the API for holidays' do
   before (:each) do
     @merchant_1 = Merchant.create!(name: "Staples")
     @merchant_2 = Merchant.create!(name: "Home Depot")
@@ -69,60 +59,21 @@ RSpec.describe 'The Bulk Discount Index' do
     @discount_1 = @merchant_1.bulk_discounts.create!(discount_rate: 10, threshold: 2)
     @discount_2 = @merchant_1.bulk_discounts.create!(discount_rate: 25, threshold: 4)
   end
-  it 'has a link on the merchant dashboard' do
-    visit "/merchants/#{@merchant_1.id}/dashboard"
-    expect(page).to have_link("View Bulk Discounts")
-    click_on("View Bulk Discounts")
-    expect(current_path).to eq("/merchants/#{@merchant_1.id}/bulk_discounts")
-  end
-
-  it 'lists all bulk discounts, the thresholds, and discounts rates' do
+#   As a merchant
+# When I visit the discounts index page
+# I see a section with a header of "Upcoming Holidays"
+# In this section the name and date of the next 3 upcoming US holidays are listed.
+#
+# Use the Next Public Holidays Endpoint in the [Nager.Date API](https://date.nager.at/swagger/index.html)
+  it 'displays the next three holidays on the discount index page' do
     visit "/merchants/#{@merchant_1.id}/bulk_discounts"
-    within ".discounts"
+    within '.upcomingholidays'
+      expect(page).to have_content("Upcoming Holidays")
+      expect(page).to have_content("Good Friday IS ON 2022-04-15")
+      expect(page).to have_content("Memorial Day IS ON 2022-05-30")
+      expect(page).to have_content("Juneteenth IS ON 2022-06-20")
+      expect(page).to_not have_content("Chirstmas")
 
-    expect(page).to have_content("Discount Rate:#{@discount_1.discount_rate}")
-    expect(page).to have_content("Discount Threshold:#{@discount_1.threshold}")
-    expect(page).to have_link("Discount: 1")
-
-    expect(page).to have_content("Discount Rate:#{@discount_2.discount_rate}")
-    expect(page).to have_content("Discount Threshold:#{@discount_2.threshold}")
-    expect(page).to have_link("Discount: 2")
   end
 
-  it 'has links to the discounts show page' do
-    visit "/merchants/#{@merchant_1.id}/bulk_discounts"
-    click_on 'Discount: 1'
-    expect(current_path).to eq("/merchants/#{@merchant_1.id}/bulk_discounts/#{@discount_1.id}")
-  end
-
-    #   Merchant Bulk Discount Create
-    #
-    # As a merchant
-    # When I visit my bulk discounts index
-    # Then I see a link to create a new discount
-    # When I click this link
-    # Then I am taken to a new page where I see a form to add a new bulk discount
-    # When I fill in the form with valid data
-    # Then I am redirected back to the bulk discount index
-    # And I see my new bulk discount listed
-
-  it 'has a link create new bulk discounts' do
-    visit "/merchants/#{@merchant_1.id}/bulk_discounts"
-    within '.links'
-    expect(page).to have_link("Create New Discount")
-    click_on("Create New Discount")
-    expect(current_path).to eq("/merchants/#{@merchant_1.id}/bulk_discounts/new")
-  end
-
-  it 'can create a new discount' do
-    visit "/merchants/#{@merchant_1.id}/bulk_discounts"
-    click_on("Create New Discount")
-    fill_in :discount_rate, with: 15
-    fill_in :threshold, with: 4
-    click_on "Save"
-    expect(current_path).to eq("/merchants/#{@merchant_1.id}/bulk_discounts")
-  
-    expect(page).to have_content("Discount Rate:15")
-    expect(page).to have_content("Discount Threshold:4")
-  end
 end
