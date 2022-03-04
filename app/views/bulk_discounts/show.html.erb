@@ -1,3 +1,4 @@
 <h1><%= "Discount #{@discount.id}'s Details" %></h1>
 <p>Min order: <%="#{@discount.threshold}"%></p>
 <p>Discount percentage: <%= "#{@discount.discount_rate}" %></p>
+<%= link_to "Edit", "/merchants/#{@discount.merchant_id}/bulk_discounts/#{@discount.id}/edit"%>
