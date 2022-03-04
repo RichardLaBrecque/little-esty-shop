@@ -11,4 +11,8 @@ class ApplicationController < ActionController::Base
   # def pulls
   #   @pulls = PullsFacade.count_pulls
   # end
+
+  def holidays
+    @holidays = HolidayFacade.find_holidays
+  end
 end

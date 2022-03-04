@@ -6,3 +6,11 @@
   <p>Discount Threshold:<%= discount.threshold %></p>
 <% end %>
 </div>
+
+<div class="upcomingholidays">
+  <h2>Upcoming Holidays</h2>
+  <% @holidays.each do |holiday| %>
+  <p><%= holiday.name %> IS ON <%= holiday.date %></p>
+  <% end %>
+
+</div>
