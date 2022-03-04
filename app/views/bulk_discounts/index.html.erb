@@ -7,6 +7,8 @@
   <h2> <%= link_to "Discount: #{index +1}", "/merchants/#{discount.merchant.id}/bulk_discounts/#{discount.id}"  %></h2>
   <p>Discount Rate:<%= discount.discount_rate %></p>
   <p>Discount Threshold:<%= discount.threshold %></p>
+  <p>Discount id: <%= discount.id %></p>
+  <%= button_to "Delete #{discount.id}", "/merchants/#{params[:merchant_id]}/bulk_discounts/#{discount.id}", method: :delete %>
 <% end %>
 </div>
 

@@ -121,8 +121,18 @@ RSpec.describe 'The Bulk Discount Index' do
     fill_in :threshold, with: 4
     click_on "Save"
     expect(current_path).to eq("/merchants/#{@merchant_1.id}/bulk_discounts")
-  
+
     expect(page).to have_content("Discount Rate:15")
     expect(page).to have_content("Discount Threshold:4")
+  end
+
+  it 'can delete a bulk discount' do
+    visit "/merchants/#{@merchant_1.id}/bulk_discounts"
+    expect(page).to have_button("Delete #{@discount_1.id}")
+  
+    click_on "Delete #{@discount_1.id}"
+    expect(current_path).to eq("/merchants/#{@merchant_1.id}/bulk_discounts")
+
+    expect(page).to_not have_content("Discount id: #{@discount_1.id}")
   end
 end
