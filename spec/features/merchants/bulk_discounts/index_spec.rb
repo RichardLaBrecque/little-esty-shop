@@ -111,7 +111,18 @@ RSpec.describe 'The Bulk Discount Index' do
     within '.links'
     expect(page).to have_link("Create New Discount")
     click_on("Create New Discount")
-    save_and_open_page
     expect(current_path).to eq("/merchants/#{@merchant_1.id}/bulk_discounts/new")
+  end
+
+  it 'can create a new discount' do
+    visit "/merchants/#{@merchant_1.id}/bulk_discounts"
+    click_on("Create New Discount")
+    fill_in :discount_rate, with: 15
+    fill_in :threshold, with: 4
+    click_on "Save"
+    expect(current_path).to eq("/merchants/#{@merchant_1.id}/bulk_discounts")
+  
+    expect(page).to have_content("Discount Rate:15")
+    expect(page).to have_content("Discount Threshold:4")
   end
 end

@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get '/admin', to: 'admin#show'
   get '/merchants/:id/dashboard', to: 'merchants#show'
   post '/admin/merchants/new', to: 'admin/merchants#create'
+  post '/merchants/:merchant_id/bulk_discounts/new', to: 'bulk_discounts#create'
 
   namespace :admin do
     resources :merchants
