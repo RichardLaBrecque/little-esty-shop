@@ -73,7 +73,8 @@ RSpec.describe 'the bulk discount show page' do
 
   it 'lists the discounts attributes' do
     visit "/merchants/#{@merchant_1.id}/bulk_discounts/#{@discount_1.id}"
-    expect(page).to have_content("#{@discount_1.id}'s Details")
+    save_and_open_page
+    expect(page).to have_content("Discount #{@discount_1.id}'s Details")
     expect(page).to have_content("Min order: #{@discount_1.threshold}")
     expect(page).to have_content("Discount percentage: #{@discount_1.discount_rate}")
   end
