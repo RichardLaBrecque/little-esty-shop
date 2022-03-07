@@ -18,5 +18,8 @@
     <%= form.label :status_shipped, "shipped" %>
     <%= form.submit "Update Item Status" %>
   <% end %>
+  <% binding.pry %>
 <% end %>
 <h2> <%= "Total Revenue: #{@invoice.total_invoice_revenue}" %> </h2>
+
+<h2> <%= "Total with Discount: #{@invoice.discounted_price}" %></h2>
