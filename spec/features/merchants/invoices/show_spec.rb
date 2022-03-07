@@ -108,4 +108,10 @@ RSpec.describe "Merchant Invoices Show Page" do
     expect(page).to_not have_content("Status: shipped")
     expect(page).to have_content("Status: packaged")
   end
+
+  xit 'can list discounted revenue' do
+    discount = @merchant_1.bulk_discounts.create(discount_rate:50, threshold:2)
+    visit "/merchants/#{@merchant_1.id}/invoices/#{@invoice_2.id}"
+    expect(page).to have_content("Total with Discount: 29")
+  end
 end
