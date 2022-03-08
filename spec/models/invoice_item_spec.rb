@@ -68,6 +68,8 @@ RSpec.describe InvoiceItem, type: :model do
     @transcation_11 = @invoice_11.transactions.create!(credit_card_number: "4654405418249614", result: "success")
     @transcation_12 = @invoice_12.transactions.create!(credit_card_number: "4654405418249635", result: "failed")
 
+    @discount_1 = @merchant_1.bulk_discounts.create!(discount_rate: 50, threshold: 2)
+    @discount_2 = @merchant_1.bulk_discounts.create!(discount_rate: 90, threshold: 4)
     end
     it 'can find the best discount' do
       expect(@invoice_item_2.best_bulk_discount).to eq(@discount_1)

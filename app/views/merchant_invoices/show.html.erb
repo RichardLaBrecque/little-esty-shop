@@ -4,7 +4,9 @@
 <h3> <%= "Customer Name: #{@invoice.customer.first_name} #{@invoice.customer.last_name}" %> </h3>
 
 <h2> Items </h2>
-<% @invoice.invoice_items.each do |invoice_item| %>
+<% @invoice.invoice_items.each_with_index do |invoice_item, index| %>
+<div class="item_<%=index + 1%>">
+
   <li> <%= "Item name: #{invoice_item.item.name}" %> </li>
   <li> <%= "Qty: #{invoice_item.quantity}" %> </li>
   <li> <%= "Unit price: #{invoice_item.unit_price}" %> </li>
@@ -18,7 +20,12 @@
     <%= form.label :status_shipped, "shipped" %>
     <%= form.submit "Update Item Status" %>
   <% end %>
-  <% binding.pry %>
+  <% if invoice_item.best_bulk_discount == nil %>
+    <%= "No Applied Discount" %>
+  <% else %>
+  <%= link_to "Discount: #{invoice_item.best_bulk_discount.id}", "/merchants/#{invoice_item.merchant.id}/bulk_discounts/#{invoice_item.best_bulk_discount.id}" %>
+  <% end %>
+</div>
 <% end %>
 <h2> <%= "Total Revenue: #{@invoice.total_invoice_revenue}" %> </h2>
 

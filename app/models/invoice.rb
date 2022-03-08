@@ -17,9 +17,9 @@ class Invoice < ApplicationRecord
   end
 
   def discounted_price
-     wip = invoice_items.sum do |invoice_item|
-      invoice_item.applied_bulk_discount
-    end
+      invoice_items.sum do |invoice_item|
+       invoice_item.applied_bulk_discount
+      end
     # wip = invoice_items.left_joins(:bulk_discounts)
     # .where("invoice_items.quantity >= bulk_discounts.threshold")
     # .select("invoice_items.*, MAX(bulk_discounts.discount_rate) AS discount")
