@@ -123,7 +123,7 @@ RSpec.describe "Merchant Invoices Show Page" do
     invoice_item_24 = InvoiceItem.create!(invoice_id: @invoice_2.id, item_id: @item_4.id, quantity: 4, unit_price: 29, status: "packaged")
 
     visit "/merchants/#{@merchant_1.id}/invoices/#{@invoice_2.id}"
-    save_and_open_page
+
 
     within "item_#{@item_1.id}"
     expect(page).to have_content("No Applied Discount")
@@ -148,6 +148,16 @@ RSpec.describe "Merchant Invoices Show Page" do
      click_on("Discount: #{discount.id}")
      expect(current_path).to eq("/merchants/#{@merchant_1.id}/bulk_discounts/#{discount.id}")
     end
+
+  end
+
+  it 'ignores revinue from other merchants on the same invoice' do
+    merchant_other = Merchant.create!(name: "Other")
+    item_other = merchant_other.items.create!(name: "potatos", description: "24 Count", unit_price: 25)
+    invoice_item_other = InvoiceItem.create!(invoice_id:@invoice_1.id, item_id: item_other.id, quantity: 4, unit_price: 25, status: "packaged")
+    visit "/merchants/#{@merchant_1.id}/invoices/#{@invoice_1.id}"
+    save_and_open_page
+    expect(page).to have_content("Total Revenue: 13")
 
   end
 end

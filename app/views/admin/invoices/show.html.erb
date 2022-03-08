@@ -1,5 +1,6 @@
 <h1>Invoice Number: <%= @invoice.id %></h1>
 <hr>
+<div class="invoice_info">
 
 <p><b>Invoice Id:</b> <%= @invoice.id %></p>
 <p><b>Invoice Status:</b> <%= @invoice.status %></p>
@@ -14,13 +15,16 @@
   <% end %>
 <p><b>Invoice Creation Date:</b> <%= @invoice.created_at.strftime("%A, %B %d, %Y") %></p>
 <p><b>Customer Name: </b> <%= @invoice.customer.first_name %> <%= @invoice.customer.last_name %></p>
-<p><b>Total Invoice Revenue: </b> $<%= @invoice.total_invoice_revenue %>
-
-<h2>Item Information:</h2>
+<p><b>Total Invoice Revenue: </b> $<%= @invoice.total_invoice_revenue %></p>
+  <p><b>Total Invoice after discounts:</b> $<%= @invoice.discounted_price %></p>
+</div>
+<div class="item_info">
+  <h2>Item Information:</h2>
 <% @invoice.invoice_items.each do |invoice_item| %>
 <p>-----------------------------</p>
 <p><b>Name: </b><%= invoice_item.item.name %></p>
-<p><b>Quantity: </b> <%= invoice_item.quantity %>
-<p><b>Price Sold For: </b> <%= invoice_item.unit_price %>
-<p><b>Invoice Item Status: </b> <%= invoice_item.status %>
+<p><b>Quantity: </b> <%= invoice_item.quantity %></p>
+<p><b>Price Sold For: </b> <%= invoice_item.unit_price %></p>
+<p><b>Invoice Item Status: </b> <%= invoice_item.status %></p>
   <% end %>
+</div>

@@ -56,4 +56,12 @@ class Merchant < ApplicationRecord
              .order(totalrevenue: :desc)
              .first.created_at
    end
+
+   def total_invoice_revenue(invoice_id)
+    invoice_items.where("invoice_items.invoice_id = ?", invoice_id)
+                    .select("SUM(invoice_items.quantity * invoice_items.unit_price) AS total")
+                    .group("invoice_items.id")
+                    .sum(&:total)
+
+   end
 end
