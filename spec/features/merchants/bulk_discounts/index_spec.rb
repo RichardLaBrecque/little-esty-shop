@@ -78,7 +78,7 @@ RSpec.describe 'The Bulk Discount Index' do
 
   it 'lists all bulk discounts, the thresholds, and discounts rates' do
     visit "/merchants/#{@merchant_1.id}/bulk_discounts"
-    within ".discounts"
+    within ".discounts" do
 
     expect(page).to have_content("Discount Rate:#{@discount_1.discount_rate}")
     expect(page).to have_content("Discount Threshold:#{@discount_1.threshold}")
@@ -87,6 +87,7 @@ RSpec.describe 'The Bulk Discount Index' do
     expect(page).to have_content("Discount Rate:#{@discount_2.discount_rate}")
     expect(page).to have_content("Discount Threshold:#{@discount_2.threshold}")
     expect(page).to have_link("Discount: 2")
+    end
   end
 
   it 'has links to the discounts show page' do
@@ -108,10 +109,11 @@ RSpec.describe 'The Bulk Discount Index' do
 
   it 'has a link create new bulk discounts' do
     visit "/merchants/#{@merchant_1.id}/bulk_discounts"
-    within '.links'
+    within '.links' do
     expect(page).to have_link("Create New Discount")
     click_on("Create New Discount")
     expect(current_path).to eq("/merchants/#{@merchant_1.id}/bulk_discounts/new")
+    end
   end
 
   it 'can create a new discount' do
@@ -129,7 +131,7 @@ RSpec.describe 'The Bulk Discount Index' do
   it 'can delete a bulk discount' do
     visit "/merchants/#{@merchant_1.id}/bulk_discounts"
     expect(page).to have_button("Delete #{@discount_1.id}")
-  
+
     click_on "Delete #{@discount_1.id}"
     expect(current_path).to eq("/merchants/#{@merchant_1.id}/bulk_discounts")
 

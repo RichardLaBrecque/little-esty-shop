@@ -88,4 +88,56 @@ RSpec.describe Invoice, type: :model do
       expect(Invoice.not_completed).to eq([invoice_1, invoice_2])
     end
   end
+
+  describe 'bulk_discount' do
+    before(:each) do
+    @merchant_1 = Merchant.create!(name: "Staples")
+    @merchant_2 = Merchant.create!(name: "Home Depot")
+
+    @item_1 = @merchant_1.items.create!(name: "stapler", description: "Staples papers together", unit_price: 13)
+    @item_2 = @merchant_1.items.create!(name: "paper", description: "construction", unit_price: 29)
+    @item_3 = @merchant_1.items.create!(name: "calculator", description: "TI-84", unit_price: 84)
+    @item_4 = @merchant_1.items.create!(name: "paperclips", description: "24 Count", unit_price: 25)
+
+    @customer_1 = Customer.create!(first_name: "Person 1", last_name: "Mcperson 1")
+    @customer_2 = Customer.create!(first_name: "Person 2", last_name: "Mcperson 2")
+    @customer_3 = Customer.create!(first_name: "Person 3", last_name: "Mcperson 3")
+    @customer_4 = Customer.create!(first_name: "Person 4", last_name: "Mcperson 4")
+    @customer_5 = Customer.create!(first_name: "Person 5", last_name: "Mcperson 5")
+    @customer_6 = Customer.create!(first_name: "Person 6", last_name: "Mcperson 6")
+
+    @invoice_1 = @customer_1.invoices.create!(status: "completed")
+    @invoice_2 = @customer_1.invoices.create!(status: "cancelled")
+    @invoice_3 = @customer_2.invoices.create!(status: "in progress")
+    @invoice_4 = @customer_2.invoices.create!(status: "completed")
+    @invoice_5 = @customer_2.invoices.create!(status: "cancelled")
+    @invoice_6 = @customer_3.invoices.create!(status: "in progress")
+    @invoice_7  = @customer_3.invoices.create!(status: "completed")
+    @invoice_8 = @customer_3.invoices.create!(status: "cancelled")
+    @invoice_9 = @customer_4.invoices.create!(status: "in progress")
+    @invoice_10 = @customer_4.invoices.create!(status: "completed")
+    @invoice_11 = @customer_5.invoices.create!(status: "cancelled")
+    @invoice_12 = @customer_6.invoices.create!(status: "in progress")
+
+    @invoice_item_1 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_1.id, quantity: 1, unit_price: 13, status: "shipped")
+    @invoice_item_2 = InvoiceItem.create!(invoice_id: @invoice_2.id, item_id: @item_2.id, quantity: 2, unit_price: 29, status: "packaged")
+    @invoice_item_3 = InvoiceItem.create!(invoice_id: @invoice_3.id, item_id: @item_3.id, quantity: 3, unit_price: 84, status: "pending")
+    @invoice_item_4 = InvoiceItem.create!(invoice_id: @invoice_4.id, item_id: @item_4.id, quantity: 4, unit_price: 25, status: "shipped")
+    @invoice_item_5 = InvoiceItem.create!(invoice_id: @invoice_5.id, item_id: @item_1.id, quantity: 5, unit_price: 13, status: "packaged")
+    @invoice_item_6 = InvoiceItem.create!(invoice_id: @invoice_6.id, item_id: @item_2.id, quantity: 6, unit_price: 29, status: "pending")
+    @invoice_item_7 = InvoiceItem.create!(invoice_id: @invoice_7.id, item_id: @item_3.id, quantity: 1, unit_price: 84, status: "shipped")
+    @invoice_item_8 = InvoiceItem.create!(invoice_id: @invoice_8.id, item_id: @item_4.id, quantity: 2, unit_price: 25, status: "packaged")
+    @invoice_item_9 = InvoiceItem.create!(invoice_id: @invoice_12.id, item_id: @item_1.id, quantity: 1, unit_price: 100, status: "pending")
+    @invoice_item_10 = InvoiceItem.create!(invoice_id: @invoice_12.id, item_id: @item_2.id, quantity: 2, unit_price: 100, status: "shipped")
+    @invoice_item_11 = InvoiceItem.create!(invoice_id: @invoice_12.id, item_id: @item_3.id, quantity: 3, unit_price: 100, status: "packaged")
+    @invoice_item_12 = InvoiceItem.create!(invoice_id: @invoice_12.id, item_id: @item_4.id, quantity: 4, unit_price: 100, status: "pending")
+
+    @discount_1 = @merchant_1.bulk_discounts.create!(discount_rate: 50, threshold: 2)
+    @discount_2 = @merchant_1.bulk_discounts.create!(discount_rate: 90, threshold: 4)
+  end
+
+  it 'can calculate the final price after discounts' do
+    expect(@invoice_12.discounted_price).to eq(390)
+  end
+end
 end

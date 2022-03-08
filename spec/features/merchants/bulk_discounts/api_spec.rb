@@ -67,12 +67,13 @@ RSpec.describe 'the API for holidays' do
 # Use the Next Public Holidays Endpoint in the [Nager.Date API](https://date.nager.at/swagger/index.html)
   it 'displays the next three holidays on the discount index page' do
     visit "/merchants/#{@merchant_1.id}/bulk_discounts"
-    within '.upcomingholidays'
+    within '.upcomingholidays' do
       expect(page).to have_content("Upcoming Holidays")
       expect(page).to have_content("Good Friday IS ON 2022-04-15")
       expect(page).to have_content("Memorial Day IS ON 2022-05-30")
       expect(page).to have_content("Juneteenth IS ON 2022-06-20")
       expect(page).to_not have_content("Chirstmas")
+    end
 
   end
 

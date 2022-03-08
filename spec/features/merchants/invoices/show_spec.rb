@@ -108,4 +108,46 @@ RSpec.describe "Merchant Invoices Show Page" do
     expect(page).to_not have_content("Status: shipped")
     expect(page).to have_content("Status: packaged")
   end
+
+  it 'can list discounted revenue' do
+    discount = @merchant_1.bulk_discounts.create(discount_rate:50, threshold:2)
+    visit "/merchants/#{@merchant_1.id}/invoices/#{@invoice_2.id}"
+    expect(page).to have_content("Total with Discount: 29")
+  end
+
+  it 'has links for each discount with each invoice_item' do
+    discount = @merchant_1.bulk_discounts.create(discount_rate:50, threshold:2)
+    discount_2 = @merchant_1.bulk_discounts.create(discount_rate:75, threshold:4)
+    invoice_item_22 = InvoiceItem.create!(invoice_id: @invoice_2.id, item_id: @item_1.id, quantity: 1, unit_price: 29, status: "packaged")
+    invoice_item_23 = InvoiceItem.create!(invoice_id: @invoice_2.id, item_id: @item_3.id, quantity: 2, unit_price: 29, status: "packaged")
+    invoice_item_24 = InvoiceItem.create!(invoice_id: @invoice_2.id, item_id: @item_4.id, quantity: 4, unit_price: 29, status: "packaged")
+
+    visit "/merchants/#{@merchant_1.id}/invoices/#{@invoice_2.id}"
+    save_and_open_page
+
+    within "item_#{@item_1.id}"
+    expect(page).to have_content("No Applied Discount")
+    within "item_#{@item_2.id}"
+    expect(page).to have_content("Discount: #{discount.id}")
+    within "item_#{@item_3.id}"
+    expect(page).to have_link("Discount: #{discount.id}")
+    within "item_#{@item_4.id}"
+    expect(page).to have_link("Discount: #{discount_2.id}")
+  end
+
+  it 'takes you to the bulk discount show page' do
+    discount = @merchant_1.bulk_discounts.create(discount_rate:50, threshold:2)
+    discount_2 = @merchant_1.bulk_discounts.create(discount_rate:75, threshold:4)
+    invoice_item_22 = InvoiceItem.create!(invoice_id: @invoice_2.id, item_id: @item_1.id, quantity: 1, unit_price: 29, status: "packaged")
+    invoice_item_23 = InvoiceItem.create!(invoice_id: @invoice_2.id, item_id: @item_3.id, quantity: 2, unit_price: 29, status: "packaged")
+    invoice_item_24 = InvoiceItem.create!(invoice_id: @invoice_2.id, item_id: @item_4.id, quantity: 4, unit_price: 29, status: "packaged")
+
+    visit "/merchants/#{@merchant_1.id}/invoices/#{@invoice_2.id}"
+
+    within ".item_1" do
+     click_on("Discount: #{discount.id}")
+     expect(current_path).to eq("/merchants/#{@merchant_1.id}/bulk_discounts/#{discount.id}")
+    end
+
+  end
 end

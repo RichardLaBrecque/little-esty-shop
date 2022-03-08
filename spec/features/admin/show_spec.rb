@@ -7,22 +7,25 @@ RSpec.describe 'the admin dashboard' do
 
   it 'has an Admin Dashboard header' do
     visit '/admin'
-    within 'header'
+    within '.header' do
     expect(page).to have_content("Admin Dashboard")
+    end
   end
 
   it 'has links to the admin merchants index' do
     visit '/admin'
-    within '.links'
+    within '.links' do
     click_on("Merchants")
     expect(current_path).to eq("/admin/merchants")
+    end
   end
 
   it 'has links to the admin merchants index' do
     visit '/admin'
-    within '.links'
+    within '.links' do
     click_on("Invoices")
     expect(current_path).to eq("/admin/invoices")
+    end
   end
 
   it "I see the names of top 5 customers, and next to each name there is the number of successful transactions with this merchant" do
