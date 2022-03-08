@@ -111,14 +111,14 @@ describe "Top 5 Revenue" do
     @invoice_7 = @customer_7.invoices.create!(status: "in progress", created_at: DateTime.new(2022, 2, 23))
     @invoice_8 = @customer_8.invoices.create!(status: "in progress", created_at: DateTime.new(2022, 2, 23))
 
-    @invoice_item_1 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_1.id, quantity: 1, unit_price: 13, status: "shipped")
-    @invoice_item_2 = InvoiceItem.create!(invoice_id: @invoice_2.id, item_id: @item_2.id, quantity: 2, unit_price: 29, status: "packaged") #*
-    @invoice_item_3 = InvoiceItem.create!(invoice_id: @invoice_3.id, item_id: @item_3.id, quantity: 3, unit_price: 84, status: "pending") #*
-    @invoice_item_4 = InvoiceItem.create!(invoice_id: @invoice_4.id, item_id: @item_4.id, quantity: 4, unit_price: 25, status: "shipped") #*
-    @invoice_item_5 = InvoiceItem.create!(invoice_id: @invoice_5.id, item_id: @item_5.id, quantity: 55, unit_price: 83, status: "packaged")
-    @invoice_item_6 = InvoiceItem.create!(invoice_id: @invoice_6.id, item_id: @item_6.id, quantity: 65, unit_price: 92, status: "pending")
-    @invoice_item_7 = InvoiceItem.create!(invoice_id: @invoice_7.id, item_id: @item_7.id, quantity: 5, unit_price: 29, status: "pending") #*
-    @invoice_item_8 = InvoiceItem.create!(invoice_id: @invoice_8.id, item_id: @item_8.id, quantity: 5, unit_price: 29, status: "pending") #*
+    @invoice_item_1 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_1.id, quantity: 1, unit_price: 10, status: "shipped")
+    @invoice_item_2 = InvoiceItem.create!(invoice_id: @invoice_2.id, item_id: @item_2.id, quantity: 2, unit_price: 10, status: "packaged") #*
+    @invoice_item_3 = InvoiceItem.create!(invoice_id: @invoice_3.id, item_id: @item_3.id, quantity: 3, unit_price: 10, status: "pending") #*
+    @invoice_item_4 = InvoiceItem.create!(invoice_id: @invoice_4.id, item_id: @item_4.id, quantity: 4, unit_price: 10, status: "shipped") #*
+    @invoice_item_5 = InvoiceItem.create!(invoice_id: @invoice_5.id, item_id: @item_5.id, quantity: 5, unit_price: 10, status: "packaged")
+    @invoice_item_6 = InvoiceItem.create!(invoice_id: @invoice_6.id, item_id: @item_6.id, quantity: 6, unit_price: 10, status: "pending")
+    @invoice_item_7 = InvoiceItem.create!(invoice_id: @invoice_7.id, item_id: @item_7.id, quantity: 7, unit_price: 10, status: "pending") #*
+    @invoice_item_8 = InvoiceItem.create!(invoice_id: @invoice_8.id, item_id: @item_8.id, quantity: 8, unit_price: 10, status: "pending") #*
 
     @transcation_1 = @invoice_1.transactions.create!(credit_card_number: "4654405418249632", result: "success")
     @transcation_2 = @invoice_2.transactions.create!(credit_card_number: "4654405418249634", result: "success")
@@ -135,15 +135,15 @@ describe "Top 5 Revenue" do
     expect(page).to have_content('Top 5 Items by Revenue')
 
     within ".top_items" do
-      expect(page).to have_link(@item_2.name)
-      expect(page).to have_link(@item_3.name)
-      expect(page).to have_link(@item_4.name)
-      expect(page).to have_link(@item_7.name)
       expect(page).to have_link(@item_8.name)
+      expect(page).to have_link(@item_7.name)
+      expect(page).to have_link(@item_4.name)
+      expect(page).to have_link(@item_3.name)
+      expect(page).to have_link(@item_2.name)
 
-      expect(@item_3.name).to appear_before(@item_7.name)
-      expect(@item_7.name).to appear_before(@item_8.name)
-      expect(@item_8.name).to appear_before(@item_4.name)
+      expect(@item_8.name).to appear_before(@item_7.name)
+      expect(@item_7.name).to appear_before(@item_4.name)
+      expect(@item_4.name).to appear_before(@item_3.name)
     end
   end
 
@@ -159,10 +159,11 @@ describe "Top 5 Revenue" do
     visit "/merchants/#{@merchant_1.id}/items"
 
     within ".top_items" do
-      expect(page).to have_content('58')
-      expect(page).to have_content('252')
-      expect(page).to have_content('100')
-      expect(page).to have_content('145')
+      expect(page).to have_content('80')
+      expect(page).to have_content('70')
+      expect(page).to have_content('40')
+      expect(page).to have_content('30')
+      expect(page).to have_content('20')
     end
 
   end

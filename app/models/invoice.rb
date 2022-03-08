@@ -10,7 +10,6 @@ class Invoice < ApplicationRecord
 
   def total_invoice_revenue
     invoice_items.sum("unit_price * quantity")
-    binding.pry
   end
 
   def self.not_completed

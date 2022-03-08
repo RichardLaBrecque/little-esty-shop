@@ -150,4 +150,14 @@ RSpec.describe "Merchant Invoices Show Page" do
     end
 
   end
+
+  it 'ignores revinue from other merchants on the same invoice' do
+    merchant_other = Merchant.create!(name: "Other")
+    item_other = merchant_other.items.create!(name: "potatos", description: "24 Count", unit_price: 25)
+    invoice_item_other = InvoiceItem.create!(invoice_id:@invoice_1.id, item_id: item_other.id, quantity: 4, unit_price: 25, status: "packaged")
+    visit "/merchants/#{@merchant_1.id}/invoices/#{@invoice_1.id}"
+    save_and_open_page
+    expect(page).to have_content("Total Revenue: 13")
+
+  end
 end

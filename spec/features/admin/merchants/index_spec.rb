@@ -60,6 +60,7 @@ RSpec.describe 'the admin merchant index' do
     invoice_item_8 = InvoiceItem.create!(invoice_id: invoice_8.id, item_id: item_8.id, quantity: 1, unit_price: 40, status: "shipped")
 
     visit '/admin/merchants'
+    save_and_open_page
 
     within ".top_merchants" do
       expect(page).to_not have_link(merchant_1.name)
