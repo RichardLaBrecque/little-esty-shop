@@ -123,7 +123,7 @@ RSpec.describe "Merchant Invoices Show Page" do
     invoice_item_24 = InvoiceItem.create!(invoice_id: @invoice_2.id, item_id: @item_4.id, quantity: 4, unit_price: 29, status: "packaged")
 
     visit "/merchants/#{@merchant_1.id}/invoices/#{@invoice_2.id}"
-    
+
 
     within "item_#{@item_1.id}"
     expect(page).to have_content("No Applied Discount")
