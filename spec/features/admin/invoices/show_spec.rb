@@ -76,6 +76,9 @@ RSpec.describe 'the admin invoice show' do
 
   it "shows total invoice revenue and discounted revenue" do
     visit "/admin/invoices/#{@invoice_1.id}"
+    within ".invoice_info" do
+      expect(page).to have_content("Total Invoice after discounts: $#{@invoice_1.discounted_price}")
+    end
     save_and_open_page
   end
 end
