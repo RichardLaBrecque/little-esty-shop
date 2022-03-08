@@ -22,6 +22,9 @@ RSpec.describe 'the admin invoice show' do
     @invoice_item_2 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_2.id, quantity: 2, unit_price: 29, status: "packaged")
     @invoice_item_3 = InvoiceItem.create!(invoice_id: @invoice_2.id, item_id: @item_3.id, quantity: 3, unit_price: 84, status: "pending")
     @invoice_item_4 = InvoiceItem.create!(invoice_id: @invoice_2.id, item_id: @item_4.id, quantity: 4, unit_price: 25, status: "shipped")
+
+    @discount = @merchant_1.bulk_discounts.create(discount_rate:50, threshold:2)
+    @discount_2 = @merchant_1.bulk_discounts.create(discount_rate:75, threshold:4)
   end
 
   it "Invoice Information in show page" do
@@ -69,5 +72,10 @@ RSpec.describe 'the admin invoice show' do
     expect(page).to_not have_content("Invoice Status: completed")
     expect(page).to have_content("Invoice Status: cancelled")
     expect(page).to_not have_content("Invoice Status: in progress")
+  end
+
+  it "shows total invoice revenue and discounted revenue" do
+    visit "/admin/invoices/#{@invoice_1.id}"
+    save_and_open_page
   end
 end

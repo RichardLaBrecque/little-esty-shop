@@ -74,7 +74,7 @@ RSpec.describe 'update discount' do
     fill_in :bulk_discount_discount_rate, with:4
     click_on "Update Bulk discount"
     expect(current_path).to eq("/merchants/#{@merchant_1.id}/bulk_discounts/#{@discount_1.id}")
-    save_and_open_page
+    
     expect(page).to have_content("Min order: 15")
     expect(page).to have_content("Discount percentage: 4")
   end
