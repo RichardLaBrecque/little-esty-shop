@@ -255,4 +255,16 @@ RSpec.describe Merchant, type: :model do
                                                 ])
     end
   end
+
+  it 'ignores revinue from other merchants on the same invoice' do
+    merchant_other = Merchant.create!(name: "Other")
+    item_other = merchant_other.items.create!(name: "potatos", description: "24 Count", unit_price: 25)
+    invoice_item_other = InvoiceItem.create!(invoice_id:@invoice_1.id, item_id: item_other.id, quantity: 4, unit_price: 25, status: "packaged")
+    expect(@merchant_1.total_invoice_revenue(@invoice_1.id)).to eq(13)
+  end
+
+  it 'calcuates the discounted revenue of an invoice' do
+    discount = @merchant_1.bulk_discounts.create(discount_rate:50, threshold:1)
+    expect(@merchant_1.total_discounted_revenue(@invoice_1.id)).to eq(6.5)
+  end
 end
