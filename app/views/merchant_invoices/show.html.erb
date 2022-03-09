@@ -26,6 +26,7 @@
   <%= link_to "Discount: #{invoice_item.best_bulk_discount.id}", "/merchants/#{invoice_item.merchant.id}/bulk_discounts/#{invoice_item.best_bulk_discount.id}" %>
   <% end %>
 </div>
+<p>-----------------------------</p>
 <% end %>
 <h2> <%= "Total Revenue: #{@merchant.total_invoice_revenue(@invoice.id)}" %> </h2>
 
