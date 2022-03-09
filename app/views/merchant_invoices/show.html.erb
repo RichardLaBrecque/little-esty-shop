@@ -29,4 +29,4 @@
 <% end %>
 <h2> <%= "Total Revenue: #{@merchant.total_invoice_revenue(@invoice.id)}" %> </h2>
 
-<h2> <%= "Total with Discount: #{@invoice.discounted_price}" %></h2>
+<h2> <%= "Total with Discount: #{(@merchant.total_invoice_revenue(@invoice.id) - @merchant.total_discounted_revenue(@invoice.id))}" %></h2>

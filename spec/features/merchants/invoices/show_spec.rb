@@ -110,9 +110,10 @@ RSpec.describe "Merchant Invoices Show Page" do
   end
 
   it 'can list discounted revenue' do
-    discount = @merchant_1.bulk_discounts.create(discount_rate:50, threshold:2)
+    discount = @merchant_1.bulk_discounts.create(discount_rate:75, threshold:2)
     visit "/merchants/#{@merchant_1.id}/invoices/#{@invoice_2.id}"
-    expect(page).to have_content("Total with Discount: 29")
+    save_and_open_page
+    expect(page).to have_content("Total with Discount: 14.5")
   end
 
   it 'has links for each discount with each invoice_item' do
@@ -156,7 +157,6 @@ RSpec.describe "Merchant Invoices Show Page" do
     item_other = merchant_other.items.create!(name: "potatos", description: "24 Count", unit_price: 25)
     invoice_item_other = InvoiceItem.create!(invoice_id:@invoice_1.id, item_id: item_other.id, quantity: 4, unit_price: 25, status: "packaged")
     visit "/merchants/#{@merchant_1.id}/invoices/#{@invoice_1.id}"
-    save_and_open_page
     expect(page).to have_content("Total Revenue: 13")
 
   end
